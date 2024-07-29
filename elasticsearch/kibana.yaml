@@ -13,10 +13,10 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana:8.14.3
+        image: docker.elastic.co/kibana/kibana:7.17.3
         env:
         - name: ELASTICSEARCH_URL
-          value: http://172.16.90.138:31012
+          value: http://10.192.40.211:32220
         - name: XPACK_SECURITY_ENABLED
           value: "true"
         ports:

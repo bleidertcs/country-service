@@ -4,12 +4,11 @@ metadata:
   name: elasticsearch-pv
 spec:
   capacity:
-    storage: 5Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
     path: /mnt/data/elasticsearch
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,8 +19,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-
+      storage: 10Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,30 +35,29 @@ spec:
         component: elasticsearch
     spec:
       containers:
-        - name: elasticsearch
-          image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
-          env:
-            - name: discovery.type
-              value: single-node
-          ports:
-            - containerPort: 9200
-              name: http
-              protocol: TCP
-          resources:
-            limits:
-              cpu: 500m
-              memory: 4Gi
-            requests:
-              cpu: 500m
-              memory: 4Gi
-          volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
-              name: elasticsearch-storage
-      volumes:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
+        env:
+        - name: discovery.type
+          value: single-node
+        ports:
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 4Gi
+          requests:
+            cpu: 500m
+            memory: 4Gi
+        volumeMounts:
         - name: elasticsearch-storage
-          persistentVolumeClaim:
-            claimName: elasticsearch-pvc
-
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+      - name: elasticsearch-storage
+        persistentVolumeClaim:
+          claimName: elasticsearch-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -73,5 +70,6 @@ spec:
   selector:
     component: elasticsearch
   ports:
-    - port: 9200
-      targetPort: 9200
+  - port: 9200
+    targetPort: 9200
+    protocol: TCP

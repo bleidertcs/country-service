@@ -24,9 +24,9 @@ spec:
         image: fluent/fluentd-kubernetes-daemonset:v1.3-debian-elasticsearch
         env:
           - name:  FLUENT_ELASTICSEARCH_HOST
-            value: "172.16.90.138"
+            value: "10.192.40.211"
           - name:  FLUENT_ELASTICSEARCH_PORT
-            value: "31012"
+            value: "32220"
           - name: FLUENT_ELASTICSEARCH_SCHEME
             value: "http"
           - name: FLUENT_UID

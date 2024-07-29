@@ -1,0 +1,79 @@
+Respuesta: Para añadir y gestionar alertas desde la interfaz de Grafana, debes seguir estos pasos:
+
+1. Acceder a Grafana
+Primero, asegúrate de tener acceso a la interfaz de Grafana. Puedes acceder a Grafana con el siguiente comando de port-forwarding
+ si estás en un clúster Kubernetes:
+
+sh
+Copiar código
+kubectl port-forward svc/grafana 3000:3000
+Luego, abre http://localhost:3000 en tu navegador.
+
+2. Crear una Alerta en un Panel
+Iniciar sesión en Grafana: Usa tus credenciales para iniciar sesión en la interfaz de Grafana.
+
+Crear o Editar un Dashboard:
+
+Si ya tienes un dashboard, selecciónalo y haz clic en el panel donde quieres agregar la alerta.
+Si no tienes un dashboard, crea uno nuevo haciendo clic en el botón + en la barra lateral izquierda y seleccionando Dashboard.
+Agregar un Panel:
+
+Haz clic en Add Panel para crear un nuevo panel o edita un panel existente haciendo clic en el icono del lápiz en el panel que deseas modificar.
+Configurar la Consulta:
+
+En el editor de paneles, configura la consulta PromQL (Prometheus Query Language) que se utilizará para la alerta. Esta consulta determinará
+ las condiciones bajo las cuales se activará la alerta.
+Configurar la Alerta:
+
+Cambia a la pestaña Alert en el editor de paneles.
+Haz clic en Create Alert para añadir una nueva alerta.
+Definir las Condiciones de Alerta:
+
+Alert Conditions: Define las condiciones bajo las cuales se debe disparar la alerta. Esto incluye establecer el umbral y la duración
+ que deben cumplirse para que la alerta se dispare.
+Evaluate every: Define la frecuencia con la que se evaluará la condición de alerta.
+For: Define el tiempo durante el cual la condición debe cumplirse antes de que se dispare la alerta.
+Configurar Notificaciones:
+
+En la sección Notifications, puedes configurar cómo se deben enviar las notificaciones cuando se active la alerta. 
+Puedes enviar notificaciones a través de Alertmanager, correos electrónicos, Slack, etc.
+Si ya tienes Alertmanager configurado, selecciona la opción de notificación que se integra con Alertmanager.
+Guardar los Cambios:
+
+Una vez que hayas configurado la alerta, guarda el panel y el dashboard.
+3. Verificar y Probar Alertas
+Verificar: Asegúrate de que las alertas se están generando y enviando correctamente a Alertmanager y otros canales de notificación configurados.
+Probar: Puedes simular condiciones de alerta para asegurarte de que las alertas se activan y notifican como se espera.
+4. Consultar Alertas en Alertmanager
+Accede a la interfaz de Alertmanager para verificar que las alertas están siendo recibidas y gestionadas correctamente. 
+Si tienes Alertmanager en Kubernetes, usa:
+
+sh
+Copiar código
+kubectl port-forward svc/alertmanager 9093:9093
+Luego abre http://localhost:9093 para ver las alertas.
+
+Ejemplo de Configuración de Alerta
+Aquí tienes un ejemplo de configuración de alerta en Grafana:
+
+Query: rate(http_requests_total[5m]) > 10
+Alert Condition: Si la tasa de http_requests_total en los últimos 5 minutos supera 10, activa la alerta.
+Evaluation Interval: Cada 1 minuto.
+For: 5 minutos.
+En Notifications puedes configurar enviar notificaciones a Alertmanager que luego se pueden enviar a Slack, correos electrónicos, etc.
+
+Recursos Adicionales
+Documentación de Alertas en Grafana
+Configuración de Notificaciones en Grafana
+Esto debería proporcionarte una guía completa para agregar y gestionar alertas desde la interfaz de Grafana. Si necesitas más ayuda, 
+no dudes en preguntar.
+
+
+
+https://medium.com/@gayatripawar401/deploy-prometheus-and-grafana-on-kubernetes-using-helm-5aa9d4fbae66
+
+https://blog.devops.dev/deploying-kube-prometheus-stack-with-persistent-storage-on-kubernetes-cluster-24473f4ea34f
+
+https://www.olivercoding.com/2021-01-26-kubernetes-grafana/
+
+https://semaphoreci.com/blog/prometheus-grafana-kubernetes-helm
